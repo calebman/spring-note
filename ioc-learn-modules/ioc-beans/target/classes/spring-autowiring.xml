@@ -5,7 +5,7 @@
        default-autowire="byName">
 
     <!-- Autowiring -->
-    <bean id="beanDao" class="com.spring.ioc.autowiring.BeanDao" autowire="byName"></bean>
+    <bean id="beanDao" class="com.spring.ioc.autowiring.BeanDao"></bean>
     <bean id="autowiringService" class="com.spring.ioc.autowiring.AutowiringService"></bean>
 
 </beans>
