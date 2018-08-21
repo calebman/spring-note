@@ -1,0 +1,11 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <!-- Autowiring -->
+    <bean id="beanDao" class="com.spring.ioc.autowiring.BeanDao"></bean>
+    <bean id="autowiringService" class="com.spring.ioc.autowiring.AutowiringService"></bean>
+
+</beans>

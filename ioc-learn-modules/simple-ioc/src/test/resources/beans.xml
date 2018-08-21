@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans>
+    <bean id="beanDao" class="com.spring.ioc.beans.BeanDao"/>
+
+    <bean id="beanService" class="com.spring.ioc.beans.BeanService">
+        <property name="beanDao" bean="beanDao"/>
+    </bean>
+</beans>

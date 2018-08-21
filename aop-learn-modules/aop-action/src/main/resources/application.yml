@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    name: mysql
+    url: jdbc:mysql://192.168.198.128:3306/aop_action?characterEncoding=utf-8
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: kingeid
+    password: 123456
+  redis:
+    database: 0
+    host: 192.168.198.128
+    port: 6379
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true

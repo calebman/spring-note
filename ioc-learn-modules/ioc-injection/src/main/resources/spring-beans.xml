@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 简单用法 -->
+    <bean id="cat" class="com.spring.ioc.animal.Cat"></bean>
+    <bean class="com.spring.ioc.animal.Dog"></bean>
+    <bean id="zoo" class="com.spring.ioc.zoo.Zoo"></bean>
+
+    <!-- 设值注入 -->
+    <bean id="setCat" class="com.spring.ioc.animal.Cat">
+        <property name="animalName" value="设值注入的猫"></property>
+    </bean>
+    <bean id="setZoo" class="com.spring.ioc.zoo.Zoo">
+        <property name="animalList">
+            <list>
+                <ref bean="setCat"/>
+                <bean id="setDog" class="com.spring.ioc.animal.Dog">
+                    <property name="animalName" value="设值注入的狗"></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 构造注入 -->
+    <bean id="constructorCat" class="com.spring.ioc.animal.Cat">
+        <constructor-arg index="0" value="构造注入的猫"></constructor-arg>
+    </bean>
+    <bean id="constructorZoo" class="com.spring.ioc.zoo.Zoo">
+        <property name="animalList">
+            <list>
+                <ref bean="constructorCat"/>
+                <bean id="constructorDog" class="com.spring.ioc.animal.Dog">
+                    <constructor-arg index="0" value="构造注入的狗"></constructor-arg>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>
