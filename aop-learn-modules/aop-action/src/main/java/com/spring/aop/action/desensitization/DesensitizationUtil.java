@@ -1,5 +1,8 @@
 package com.spring.aop.action.desensitization;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,8 +18,8 @@ public class DesensitizationUtil {
         return desensitization(t, DEFAULT_SENSITIVE_ARR);
     }
 
-    public static boolean hasSensitive(Object obj) {
-        return hasSensitive(obj, DEFAULT_SENSITIVE_ARR);
+    public static List<String> getSensitivesOfObj(Object obj) {
+        return getSensitivesOfObj(obj, DEFAULT_SENSITIVE_ARR);
     }
 
     /**
@@ -34,7 +37,7 @@ public class DesensitizationUtil {
             String objStr = t.toString();
             for (String sensitiveStr : sensitiveArr) {
                 // 替换敏感词
-                objStr = objStr.replaceAll(sensitiveStr, generatorStar(sensitiveStr.length()));
+                objStr = objStr.replaceAll("(?i)" + sensitiveStr, generatorStar(sensitiveStr.length()));
             }
             t = (T) objStr;
         }
@@ -48,19 +51,21 @@ public class DesensitizationUtil {
      * @param sensitiveArr 敏感词数组
      * @return
      */
-    public static boolean hasSensitive(Object obj, String[] sensitiveArr) {
+    public static List<String> getSensitivesOfObj(Object obj, String[] sensitiveArr) {
+        List<String> sensitives = new ArrayList<>();
         if (obj == null) {
-            return false;
+            return sensitives;
         }
         if (obj instanceof String) {
             String objStr = obj.toString();
             for (String sensitiveStr : sensitiveArr) {
-                if (objStr.indexOf(sensitiveStr) > -1) {
-                    return true;
+                if (objStr.toLowerCase().indexOf(sensitiveStr) > -1) {
+                    sensitives.add(sensitiveStr);
+                    continue;
                 }
             }
         }
-        return false;
+        return sensitives;
     }
 
     /**

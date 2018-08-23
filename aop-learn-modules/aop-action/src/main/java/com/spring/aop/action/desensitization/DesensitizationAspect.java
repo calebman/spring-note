@@ -13,10 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author calebman
@@ -28,7 +25,7 @@ import java.util.UUID;
 @Slf4j
 public class DesensitizationAspect {
 
-    static final String[] SENSITIVE_ARR = new String[]{"sb", "2b", "fuck", "hc", "calebman"};
+    static final String[] SENSITIVE_ARR = new String[]{"yellow", "silly", "fool", "stupid"};
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -40,22 +37,31 @@ public class DesensitizationAspect {
         Object[] args = joinPoint.getArgs();
         showInvokeMethodInfo(className, methodName, args);
         if (args.length > 0) {
-            // 获取敏感参数的位置信息
-            int[] desArgPos = getDesensitizationArgsLength(args);
-            if (desArgPos.length > 0) {
+            List<Integer> desArgPosList = new ArrayList<>();
+            Set<String> senstiveset = new HashSet<>();
+            // 获取敏感词信息及其敏感参数位置信息
+            for (int i = 0; i < args.length; i++) {
+                List<String> senstives = DesensitizationUtil.getSensitivesOfObj(args[i], SENSITIVE_ARR);
+                if (senstives.size() > 0) {
+                    desArgPosList.add(i);
+                    senstiveset.addAll(senstives);
+                }
+            }
+            if (desArgPosList.size() > 0) {
                 // 将敏感调用存储在redis中
                 // 构建存储实体
                 DesensitizationInvokeInfo desensitizationInvokeInfo = new DesensitizationInvokeInfo();
-                desensitizationInvokeInfo.setCurrentUser(CurrentUserHolder.getCurrentUser());
+                desensitizationInvokeInfo.setCurrentUsername(CurrentUserHolder.getCurrentUser() == null ? null : CurrentUserHolder.getCurrentUser().getUser().getUsername());
                 desensitizationInvokeInfo.setClassName(className);
                 desensitizationInvokeInfo.setMethodName(methodName);
-                desensitizationInvokeInfo.setArgs(copy(args, desArgPos));
+                desensitizationInvokeInfo.setArgs(copy(args, desArgPosList));
+                desensitizationInvokeInfo.setSensitives(senstiveset);
                 // 脱敏处理
-                desensitizationArgs(args, desArgPos);
-                desensitizationInvokeInfo.setDesensitizationArgs(copy(args, desArgPos));
+                desensitizationArgs(args, desArgPosList);
+                desensitizationInvokeInfo.setDesensitizationArgs(copy(args, desArgPosList));
                 // 存储在redis中
                 ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-                String key = "desensitization_obj_" + UUID.randomUUID().toString().replaceAll("-", "");
+                String key = UUID.randomUUID().toString().replaceAll("-", "");
                 String value = new ObjectMapper().writeValueAsString(desensitizationInvokeInfo);
                 valueOperations.set(key, value);
                 // 显示脱敏后的调用信息
@@ -68,36 +74,16 @@ public class DesensitizationAspect {
     /**
      * 复制数组
      *
-     * @param args 源数组
-     * @param pos  复制位置
+     * @param args          源数组
+     * @param desArgPosList 复制位置
      * @return 目标数组
      */
-    Object[] copy(Object[] args, int[] pos) {
-        Object[] ret = new Object[pos.length];
-        for (int i = 0; i < pos.length; i++) {
-            ret[i] = args[pos[i]];
+    List<Object> copy(Object[] args, List<Integer> desArgPosList) {
+        List<Object> ret = new ArrayList<>();
+        for (int pos : desArgPosList) {
+            ret.add(args[pos]);
         }
         return ret;
-    }
-
-    /**
-     * 获取敏感参数长度
-     *
-     * @param args 参数列表
-     * @return 敏感参数长度
-     */
-    int[] getDesensitizationArgsLength(Object[] args) {
-        List<Integer> desArgPosList = new ArrayList<>();
-        for (int i = 0; i < args.length; i++) {
-            if (DesensitizationUtil.hasSensitive(args[i], SENSITIVE_ARR)) {
-                desArgPosList.add(i);
-            }
-        }
-        int[] desArgPos = new int[desArgPosList.size()];
-        for (int i = 0; i < desArgPosList.size(); i++) {
-            desArgPos[i] = desArgPosList.get(i);
-        }
-        return desArgPos;
     }
 
     /**
@@ -105,9 +91,9 @@ public class DesensitizationAspect {
      *
      * @param args 方法参数
      */
-    void desensitizationArgs(Object[] args, int[] desArgPos) {
+    void desensitizationArgs(Object[] args, List<Integer> desArgPosList) {
         log.info("####进行参数脱敏####");
-        for (int pos : desArgPos) {
+        for (int pos : desArgPosList) {
             args[pos] = DesensitizationUtil.desensitization(args[pos], SENSITIVE_ARR);
         }
     }

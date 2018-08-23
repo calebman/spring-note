@@ -23,7 +23,6 @@ import java.util.Random;
  * @description 微博服务类
  */
 @Service
-@Slf4j
 @RequirePermission({Permission.ADMIN, Permission.NORMAL})
 public class WeiboService {
 

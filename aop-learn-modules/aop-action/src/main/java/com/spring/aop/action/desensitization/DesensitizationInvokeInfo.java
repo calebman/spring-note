@@ -5,6 +5,9 @@ import com.spring.aop.action.security.CurrentUser;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author calebman
@@ -14,13 +17,15 @@ import java.io.Serializable;
 @Data
 public class DesensitizationInvokeInfo {
     // 当前操作用户
-    private CurrentUser currentUser;
+    private String currentUsername;
     // 调用服务类
     private String className;
     // 调用服务方法
     private String methodName;
-    // 服务参数
-    private Object[] args;
+    // 检测参数
+    private List<Object> args;
     // 脱敏后的参数
-    private Object[] desensitizationArgs;
+    private List<Object> desensitizationArgs;
+    // 涉及敏感词
+    private Set<String> sensitives;
 }

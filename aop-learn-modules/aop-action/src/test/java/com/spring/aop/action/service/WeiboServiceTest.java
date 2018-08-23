@@ -1,5 +1,6 @@
 package com.spring.aop.action.service;
 
+import com.github.javafaker.Faker;
 import com.spring.aop.action.pojo.Weibo;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -34,32 +36,19 @@ public class WeiboServiceTest {
 
     @Test
     public void weiboTest() {
+        Faker faker = new Faker();
         for (int i = 1; i <= 50; i++) {
-            weiboService.createWeibo("测试标题", "这是一条测试微博[" + generatorStr(160) + "]");
+            String weiboTitle = faker.lorem().sentence();
+            String weiboContent = faker.lorem().paragraph();
+            weiboService.createWeibo(weiboTitle, weiboContent);
         }
         // 获取所有微博
         List<Weibo> weiboList = weiboService.getWeiboList();
         for (int i = 1; i <= 500; i++) {
             // 随机获取一条微博
-            Weibo weibo = weiboList.get(new Random().nextInt(weiboList.size()));
-            weiboService.createComment(weibo, "这是生成的第" + i + "条测试评论[" + generatorStr(80) + "]");
+            Weibo weibo = weiboList.get(faker.number().numberBetween(0, weiboList.size()));
+            String commentContent = faker.lorem().sentence();
+            weiboService.createComment(weibo, commentContent);
         }
-    }
-
-    /**
-     * 生成随机的字符串
-     *
-     * @param len 字符串长度
-     * @return 生成的字符串
-     */
-    public static String generatorStr(int len) {
-        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < len; i++) {
-            int number = random.nextInt(str.length());
-            sb.append(str.charAt(number));
-        }
-        return sb.toString();
     }
 }
