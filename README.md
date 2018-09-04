@@ -1,12 +1,12 @@
-<p align="center">
-  <img width="320" src="https://github.com/calebman/spring-note/blob/master/images/spring-note.svg">
-</p>
-
-> 本仓库是基于[**spring-framework-5.0.18**](https://github.com/spring-projects/spring-framework/tree/5.0.x)框架的学习记录，包括笔记及代码记录
+> 本仓库是基于[**spring-framework-5.0.18**](https://github.com/spring-projects/spring-framework/tree/5.0.x)框架系列的学习记录，包含笔记及代码
 
 | Ⅰ                         | Ⅱ                         | Ⅲ                               |
 | ------------------------- | ------------------------- | ------------------------------- |
 | [spring-ioc](#spring-ioc) | [spring-aop](#spring-aop) | [spring-webmvc](#spring-webmvc) |
+
+<p align="center">
+  <img width="320" src="https://github.com/calebman/spring-note/blob/master/images/spring-note.svg">
+</p>
 
 ## spring-ioc
 
