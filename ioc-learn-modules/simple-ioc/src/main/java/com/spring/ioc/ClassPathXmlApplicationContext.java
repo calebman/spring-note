@@ -95,14 +95,12 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
     private Bean instanceBean(Element element) throws Exception {
         String id = element.getAttributeValue("id");
         String clazz = element.getAttributeValue("class");
-        if (id == null) {
-
-        }
         Object instance = null;
         // 取构造参数
         List<Element> constructorArgElements = element.getChildren("constructor-arg");
         // 有参构造
         if (constructorArgElements.size() > 0) {
+            // 取所有构造参数
             Constructor<?> cons[] = Class.forName(clazz).getConstructors();
             Object[] constructorArgs = new Object[constructorArgElements.size()];
             for (int i = 0; i < constructorArgElements.size(); i++) {

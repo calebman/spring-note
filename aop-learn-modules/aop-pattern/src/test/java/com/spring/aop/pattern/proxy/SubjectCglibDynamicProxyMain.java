@@ -1,6 +1,5 @@
 package com.spring.aop.pattern.proxy;
 
-import com.spring.aop.pattern.proxy.Subject;
 import com.spring.aop.pattern.proxy.impl.MyAdvice;
 import com.spring.aop.pattern.proxy.impl.RealSubject;
 import com.spring.aop.pattern.proxy.type.SubjectCglibMethodInterceptor;
