@@ -1,4 +1,4 @@
-package com.spring.ioc.expand;
+package com.spring.ioc.offrate;
 
 import com.spring.ioc.book.Book;
 
@@ -18,5 +18,13 @@ public class BookWithOffRate extends Book implements OffRateInterface {
     @Override
     public void setOffRate(Double offRate) {
         this.offRate = offRate;
+    }
+
+    @Override
+    public Double getPrice() {
+        if (this.offRate == null) {
+            return super.getPrice();
+        }
+        return 0.1 * this.offRate * super.getPrice();
     }
 }

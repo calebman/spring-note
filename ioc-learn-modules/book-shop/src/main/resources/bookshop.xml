@@ -10,19 +10,9 @@
     <!--<property name="price" value="9.5"></property>-->
     <!--</bean>-->
 
-    <bean id="book" class="com.spring.ioc.expand.BookWithOffRate">
+    <bean id="book" class="com.spring.ioc.offrate.BookWithOffRate">
         <property name="name" value="读者"></property>
         <property name="price" value="9.5"></property>
         <property name="offRate" value="9.0"></property>
     </bean>
-    <!-- 书籍价格计算方法拦截 -->
-    <bean id="bookGetPriceInterceptor" class="com.spring.ioc.expand.BookGetPriceInterceptor">
-    </bean>
-    <aop:config>
-        <!-- 拦截所有BookInterface对象的getPrice方法 -->
-        <aop:pointcut expression="execution(* *.getPrice(..))&amp;&amp;this(com.spring.ioc.book.BookInterface)"
-                      id="priceCut"/>
-        <!-- 通知给价格计算拦截器 -->
-        <aop:advisor advice-ref="bookGetPriceInterceptor" pointcut-ref="priceCut"/>
-    </aop:config>
 </beans>
