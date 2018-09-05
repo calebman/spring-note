@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+    <!-- 书店书籍定义 -->
+
+    <!--<bean id="book" class="com.spring.ioc.book.Book">-->
+    <!--<property name="name" value="读者"></property>-->
+    <!--<property name="price" value="9.5"></property>-->
+    <!--</bean>-->
+
+    <bean id="book" class="com.spring.ioc.expand.BookWithOffRate">
+        <property name="name" value="读者"></property>
+        <property name="price" value="9.5"></property>
+        <property name="offRate" value="9.0"></property>
+    </bean>
+    <!-- 书籍价格计算方法拦截 -->
+    <bean id="bookGetPriceInterceptor" class="com.spring.ioc.expand.BookGetPriceInterceptor"></bean>
+    <aop:config>
+        <!-- 拦截所有BookInterface对象的getPrice方法 -->
+        <aop:pointcut expression="execution(* *.getPrice(..))&amp;&amp;this(com.spring.ioc.book.BookInterface)"
+                      id="priceCut"/>
+        <!-- 通知给价格计算拦截器 -->
+        <aop:advisor advice-ref="bookGetPriceInterceptor" pointcut-ref="priceCut"/>
+    </aop:config>
+</beans>
