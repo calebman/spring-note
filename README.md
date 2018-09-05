@@ -8,7 +8,7 @@
 | :-----------------------: | :-----------------------: | :-----------------------------: |
 | [spring-ioc](#spring-ioc) | [spring-aop](#spring-aop) | [spring-webmvc](#spring-webmvc) |
 
-## :book: spring-ioc
+## spring-ioc
 
 ![spring-ioc学习大纲](https://github.com/calebman/spring-note/blob/master/images/ioc-learn.png) 
 
@@ -24,8 +24,8 @@
 - ### 实现一个简单的ioc容器
     - [手把手教你如何实现一个简单的ioc容器](https://github.com/calebman/spring-note/blob/master/notes/ioc/simple-ioc.md)
 
-## :beer: spring-aop
+## spring-aop
 
 ![spring-aop学习大纲](https://github.com/calebman/spring-note/blob/master/images/aop-learn.png) 
 
-## :basketball:  spring-webmvc
+## spring-webmvc
